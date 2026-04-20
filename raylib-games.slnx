@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="snake/snake.vcxproj" Id="92557bf5-a692-4c23-8bbf-503ad023b266" />
+  <Project Path="tetris/tetris.vcxproj" Id="bf2fd774-05d8-4357-aaa6-626adf37a3e1" />
+</Solution>
