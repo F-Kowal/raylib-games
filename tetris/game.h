@@ -11,10 +11,18 @@ public:
 	Block GetRandomBlock();
 	std::vector<Block> GetAllBlocks();
 	void Draw();
+	void HandleInput();
+	void MoveLeft();
+	void MoveRight();
+	void MoveDown();
 	Grid grid;
 
 private:
 	std::vector<Block> blocks;
+	bool IsBlockOutside();
+	void RotateBlock();
+	void LockBlock();
+	bool BlockFits();
 	Block currentBlock;
 	Block nextBlock;
 };
