@@ -1,5 +1,11 @@
 file(GLOB_RECURSE TETRIS_SOURCES src/*.cpp)
-add_executable(tetris ${TETRIS_SOURCES})
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_executable(tetris WIN32 ${TETRIS_SOURCES})
+else()
+    add_executable(tetris ${TETRIS_SOURCES})
+endif()
+
 target_include_directories(tetris PRIVATE include)
 target_link_libraries(tetris PRIVATE raylib)
 
@@ -13,3 +19,5 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
             $<TARGET_FILE_DIR:tetris>/assets
     )
 endif()
+
+set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc -static-libstdc++")

@@ -19,8 +19,9 @@ bool EventTrigered(double interval)
 int main()
 {
 	Color grey = {40, 40, 40, 255};
+	SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 	InitWindow(500, 620, "Tetris++");
-	SetTargetFPS(60);
+	SetTargetFPS(60);	
 
 	Font font = LoadFontEx("assets/fonts/NineteenEightySeven.ttf", 64, 0, 0);
 
@@ -28,6 +29,7 @@ int main()
 
 	while (WindowShouldClose() == false)
 	{
+		UpdateMusicStream(game.music);
 		game.HandleInput();
 		bool fastDrop = IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN);
 		double interval = fastDrop ? 0.05 : 0.3;
@@ -48,6 +50,7 @@ int main()
 			DrawTextEx(font, "GAME OVER", {320, 490}, 19, 2, WHITE);
 			DrawTextEx(font, "Press any key", {325, 525}, 13, 2, WHITE);
 			DrawTextEx(font, "to restart", {345, 542}, 13, 2, WHITE);
+			StopMusicStream(game.music);
 		}
 
 		char scoreText[10];

@@ -12,6 +12,21 @@ Game::Game()
 	nextBlock = GetRandomBlock();
 	gameOver = false;
 	score = 0;
+	InitAudioDevice();
+	music = LoadMusicStream("assets/sounds/theme.mp3");
+	PlayMusicStream(music);
+	clearSound = LoadSound("assets/sounds/clear.mp3");
+	dropSound = LoadSound("assets/sounds/drop.mp3");
+	gameOverSound = LoadSound("assets/sounds/gameOver.mp3");
+}
+
+Game::~Game()
+{
+	UnloadSound(clearSound);
+	UnloadSound(dropSound);
+	UnloadSound(gameOverSound);
+	UnloadMusicStream(music);
+	CloseAudioDevice();
 }
 
 Block Game::GetRandomBlock()
@@ -157,17 +172,23 @@ void Game::LockBlock()
 	if (BlockFits() == false)
 	{
 		gameOver = true;
+		PlaySound(gameOverSound);
 	}
-
+	PlaySound(dropSound);
 	nextBlock = GetRandomBlock();
 	int rowsCleared = grid.ClearFullRows();
-	UpdateScore(rowsCleared, 0);
+	if (rowsCleared > 0)
+	{
+		PlaySound(clearSound);
+		UpdateScore(rowsCleared, 0);
+	}	
 }
 
 void Game::Reset()
 {
 	grid.Initialize();
 	score = 0;
+	PlayMusicStream(music);
 	blocks = GetAllBlocks();
 	currentBlock = GetRandomBlock();
 	nextBlock = GetRandomBlock();

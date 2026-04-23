@@ -7,12 +7,14 @@
 class Game
 {
 public:
-	Game();	
-	void Draw();
+	Game();
+    ~Game();
+    void Draw();
 	void HandleInput();
 	void MoveDown(bool isSoftDrop);
 	bool gameOver;
 	int score;
+	Music music;
 
 private:
 	Block GetRandomBlock();
@@ -29,6 +31,10 @@ private:
 	Grid grid;
 	Block currentBlock;
 	Block nextBlock;
+	// Sound rotateSound;
+	Sound clearSound;
+	Sound dropSound;
+	Sound gameOverSound;
 };
 
 #endif
