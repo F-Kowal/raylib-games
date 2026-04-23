@@ -2,4 +2,14 @@
 
 A small collection of games written in C++ using raylib.
 
-No engine, no editor, no safety net. Just a render loop and whatever happens inside it.
+
+## Tetris ++
+### Prerequisites
+- CMake
+- C++17 compiler
+
+### Build
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .

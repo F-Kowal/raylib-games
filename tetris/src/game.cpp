@@ -10,6 +10,8 @@ Game::Game()
 	blocks = GetAllBlocks();
 	currentBlock = GetRandomBlock();
 	nextBlock = GetRandomBlock();
+	gameOver = false;
+	score = 0;
 }
 
 Block Game::GetRandomBlock()
@@ -17,7 +19,7 @@ Block Game::GetRandomBlock()
 	if (blocks.empty())
 	{
 		blocks = GetAllBlocks();
-	}	
+	}
 
 	int randomIndex = rand() % blocks.size();
 
@@ -29,18 +31,35 @@ Block Game::GetRandomBlock()
 
 std::vector<Block> Game::GetAllBlocks()
 {
-	return { LBlock(), JBlock(),IBlock(), OBlock(), SBlock(), TBlock(), ZBlock() };
+	return {LBlock(), JBlock(), IBlock(), OBlock(), SBlock(), TBlock(), ZBlock()};
 }
 
 void Game::Draw()
 {
 	grid.Draw();
-	currentBlock.Draw();
+	currentBlock.Draw(11, 11);
+	switch (nextBlock.id)
+	{
+	case 3:
+		nextBlock.Draw(255, 310);
+		break;
+	case 4:
+		nextBlock.Draw(255, 290);
+		break;	
+	default:
+		nextBlock.Draw(270, 290);
+		break;
+	}
 }
 
 void Game::HandleInput()
 {
 	int keyPressed = GetKeyPressed();
+	if (gameOver && keyPressed != 0)
+	{
+		gameOver = false;
+		Reset();
+	}
 
 	if (keyPressed == KEY_A || keyPressed == KEY_LEFT)
 	{
@@ -56,38 +75,48 @@ void Game::HandleInput()
 	{
 		RotateBlock();
 	}
-
-	if (keyPressed == KEY_S || keyPressed == KEY_DOWN)
-	{
-		MoveDown();
-	}
 }
 
 void Game::MoveLeft()
 {
-	currentBlock.Move(0, -1);
-	if (IsBlockOutside() || BlockFits() == false)
+	if (!gameOver)
 	{
-		currentBlock.Move(0, 1);
+		currentBlock.Move(0, -1);
+		if (IsBlockOutside() || BlockFits() == false)
+		{
+			currentBlock.Move(0, 1);
+		}
 	}
 }
 
 void Game::MoveRight()
 {
-	currentBlock.Move(0, 1);
-	if (IsBlockOutside() || BlockFits() == false)
+	if (!gameOver)
 	{
-		currentBlock.Move(0, -1);
+		currentBlock.Move(0, 1);
+		if (IsBlockOutside() || BlockFits() == false)
+		{
+			currentBlock.Move(0, -1);
+		}
 	}
 }
 
-void Game::MoveDown()
+void Game::MoveDown(bool isSoftDrop)
 {
-	currentBlock.Move(1, 0);
-	if (IsBlockOutside() || BlockFits() == false)
+	if (!gameOver)
 	{
-		currentBlock.Move(-1, 0);
-		LockBlock();
+		currentBlock.Move(1, 0);
+		if (IsBlockOutside() || BlockFits() == false)
+		{
+			currentBlock.Move(-1, 0);
+			LockBlock();
+		}
+		else {
+			if (isSoftDrop)
+			{
+				UpdateScore(0, 1);
+			}			
+		}
 	}
 }
 
@@ -107,10 +136,13 @@ bool Game::IsBlockOutside()
 
 void Game::RotateBlock()
 {
-	currentBlock.Rotate();
-	if (IsBlockOutside() || BlockFits() == false)
+	if (!gameOver)
 	{
-		currentBlock.UndoRotation();
+		currentBlock.Rotate();
+		if (IsBlockOutside() || BlockFits() == false)
+		{
+			currentBlock.UndoRotation();
+		}
 	}
 }
 
@@ -122,7 +154,43 @@ void Game::LockBlock()
 		grid.grid[item.row][item.column] = currentBlock.id;
 	}
 	currentBlock = nextBlock;
+	if (BlockFits() == false)
+	{
+		gameOver = true;
+	}
+
 	nextBlock = GetRandomBlock();
+	int rowsCleared = grid.ClearFullRows();
+	UpdateScore(rowsCleared, 0);
+}
+
+void Game::Reset()
+{
+	grid.Initialize();
+	score = 0;
+	blocks = GetAllBlocks();
+	currentBlock = GetRandomBlock();
+	nextBlock = GetRandomBlock();
+}
+
+void Game::UpdateScore(int linesCleared, int moveDownPoints)
+{
+	switch (linesCleared)
+	{
+	case 1:
+		score += 100;
+		break;
+	case 2:
+		score += 300;
+		break;
+	case 3:
+		score += 500;
+		break;
+	default:
+		break;
+	}
+
+	score += moveDownPoints;
 }
 
 bool Game::BlockFits()
