@@ -1,5 +1,6 @@
 #include "game.h"
 #include <random>
+#include <ctime>
 
 Game::Game()
 {

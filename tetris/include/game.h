@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "grid.h"
-#include "blocks.cpp"
+#include "blocks.h"
 
 class Game
 {

@@ -7,6 +7,22 @@
 *.o
 *.obj
 
+# Build outputs
+build/
+cmake-build-*/
+vs-build/
+out/
+
+# Visual Studio junk
+.vscode/
+.vs/
+*.user
+*.suo
+
+# Compiled binaries
+*.exe
+*.out
+
 # Precompiled Headers
 *.gch
 *.pch

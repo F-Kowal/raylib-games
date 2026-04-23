@@ -1,3 +1,6 @@
+#ifndef BLOCKS_H
+#define BLOCKS_H
+
 #include "block.h"
 #include "position.h"
 
@@ -97,3 +100,5 @@ public:
 		Move(0, 3);
 	}
 };
+
+#endif
