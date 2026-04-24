@@ -48,7 +48,7 @@ int main()
 		if (game.gameOver)
 		{
 			DrawTextEx(font, "GAME OVER", {320, 490}, 19, 2, WHITE);
-			DrawTextEx(font, "Press enter key", {325, 525}, 13, 2, WHITE);
+			DrawTextEx(font, "Press [Enter]", {325, 525}, 13, 2, WHITE);
 			DrawTextEx(font, "to restart", {345, 542}, 13, 2, WHITE);
 			StopMusicStream(game.music);
 		}
