@@ -70,7 +70,7 @@ void Game::Draw()
 void Game::HandleInput()
 {
 	int keyPressed = GetKeyPressed();
-	if (gameOver && keyPressed != 0)
+	if (gameOver && keyPressed == KEY_ENTER)
 	{
 		gameOver = false;
 		Reset();
@@ -86,7 +86,7 @@ void Game::HandleInput()
 		MoveRight();
 	}
 
-	if (keyPressed == KEY_W || keyPressed == KEY_UP)
+	if (keyPressed == KEY_W || keyPressed == KEY_UP || keyPressed == KEY_SPACE)
 	{
 		RotateBlock();
 	}
